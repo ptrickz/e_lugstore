@@ -29,6 +29,7 @@ class _BackgroundState extends State<Background> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         drawer: widget.hasDrawer
             ? NavDrawer(
                 isStaff: widget.isStaff,

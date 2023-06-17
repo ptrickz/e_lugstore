@@ -1,14 +1,21 @@
+import 'package:e_lugstore/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/navdrawer.dart';
 
 class Background extends StatefulWidget {
   final bool? isStaff;
+  final bool? isHomePage;
+  final bool hasAction;
   final bool hasDrawer;
   final String pageTitle;
   final String assetImage;
   final IconData? icon;
+  final IconData? fabIcon;
+  final IconData? actionIcon;
+  final Function()? fabFunc;
   final Function()? appBarLeading;
+  final Function()? actionButtonFunc;
   final Widget child;
   const Background({
     super.key,
@@ -19,6 +26,12 @@ class Background extends StatefulWidget {
     required this.child,
     required this.hasDrawer,
     this.isStaff,
+    this.fabIcon,
+    this.fabFunc,
+    required this.isHomePage,
+    required this.hasAction,
+    this.actionIcon,
+    this.actionButtonFunc,
   });
 
   @override
@@ -29,13 +42,32 @@ class _BackgroundState extends State<Background> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        floatingActionButton: widget.isHomePage!
+            ? FloatingActionButton(
+                backgroundColor: accent,
+                onPressed: widget.fabFunc,
+                child: widget.isHomePage!
+                    ? Icon(
+                        widget.fabIcon,
+                        color: Colors.white,
+                      )
+                    : null)
+            : null,
+        // resizeToAvoidBottomInset: false,
         drawer: widget.hasDrawer
             ? NavDrawer(
                 isStaff: widget.isStaff,
               )
             : null,
         appBar: AppBar(
+          actions: widget.hasAction
+              ? [
+                  IconButton(
+                    onPressed: widget.actionButtonFunc,
+                    icon: Icon(widget.actionIcon),
+                  )
+                ]
+              : null,
           centerTitle: true,
           automaticallyImplyLeading: widget.hasDrawer ? true : false,
           leading: widget.hasDrawer
@@ -71,7 +103,7 @@ class _BackgroundState extends State<Background> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(widget.assetImage),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
               ),

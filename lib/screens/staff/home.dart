@@ -11,12 +11,16 @@ class StaffHome extends StatefulWidget {
 class _StaffHomeState extends State<StaffHome> {
   @override
   Widget build(BuildContext context) {
-    return const Background(
+    return Background(
+        hasAction: false,
+        isHomePage: true,
+        fabFunc: () {},
+        fabIcon: Icons.qr_code_scanner_outlined,
         isStaff: true,
         hasDrawer: true,
         pageTitle: "Welcome, Staff",
         assetImage: "assets/images/homeStaff.png",
-        child: Center(
+        child: const Center(
           child: Text("Staff Home Page"),
         ));
   }

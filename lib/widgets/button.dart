@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 class MyButton extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
-  const MyButton({super.key, required this.text, required this.onPressed});
+  final bool isRed;
+  const MyButton(
+      {super.key,
+      required this.text,
+      required this.onPressed,
+      required this.isRed});
 
   @override
   State<MyButton> createState() => _MyButtonState();
@@ -18,7 +23,7 @@ class _MyButtonState extends State<MyButton> {
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-            backgroundColor: accent,
+            backgroundColor: widget.isRed ? Colors.red : accent,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

@@ -4,14 +4,16 @@ import 'package:e_lugstore/screens/user/bookingform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class UseerHome extends StatefulWidget {
-  const UseerHome({super.key});
+import 'bookingdetails.dart';
+
+class UserHome extends StatefulWidget {
+  const UserHome({super.key});
 
   @override
-  State<UseerHome> createState() => _UseerHomeState();
+  State<UserHome> createState() => _UserHomeState();
 }
 
-class _UseerHomeState extends State<UseerHome> {
+class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -19,7 +21,7 @@ class _UseerHomeState extends State<UseerHome> {
         isHomePage: true,
         isStaff: false,
         hasDrawer: true,
-        pageTitle: "Booking History",
+        pageTitle: "Welcome, ${FirebaseAuth.instance.currentUser!.displayName}",
         assetImage: "assets/images/homeUser.png",
         fabIcon: Icons.add,
         fabFunc: () {
@@ -42,29 +44,50 @@ class _UseerHomeState extends State<UseerHome> {
               }
 
               if (snapshot.data!.docs.isEmpty) {
-                return Center(
-                  child: Text(
-                      "No bookings yet for ${FirebaseAuth.instance.currentUser!.email.toString()}"),
+                return const Center(
+                  child: Text("No bookings yet."),
                 );
               }
 
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                          "Luggage on: ${DateTime.parse(data['date'].toDate().toString()).toString().substring(0, 10)}"),
-                      subtitle: Text(
-                          "at ${DateTime.parse(data['date'].toDate().toString()).toString().substring(11, 16)}"),
-                      trailing: Text(
-                        data['quantity'],
-                        style: TextStyle(color: Colors.green, fontSize: 20),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: SingleChildScrollView(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => BookingDetails(
+                                    isStaff: false,
+                                    documentId: data['id'],
+                                  )));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            child: ListTile(
+                              title: Text(
+                                data['id'],
+                              ),
+                              subtitle: Text(
+                                  "booked on ${DateTime.parse(data['date'].toDate().toString()).toString().substring(0, 10)}"),
+                              trailing: Text(
+                                data['quantity'],
+                                style: const TextStyle(
+                                    color: Colors.green, fontSize: 20),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
               );
             }));
   }

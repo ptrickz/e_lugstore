@@ -64,7 +64,10 @@ class _BackgroundState extends State<Background> {
               ? [
                   IconButton(
                     onPressed: widget.actionButtonFunc,
-                    icon: Icon(widget.actionIcon),
+                    icon: Icon(
+                      widget.actionIcon,
+                      color: Colors.black,
+                    ),
                   )
                 ]
               : null,

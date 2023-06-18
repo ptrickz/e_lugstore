@@ -3,12 +3,24 @@ import 'package:flutter/material.dart';
 class InputField extends StatefulWidget {
   final String labelText;
   final IconData icondata;
+  final FormFieldValidator? validator;
   final TextEditingController controller;
+  final bool isAuthField;
+  final TextInputType? keyboardType;
+  final bool? isEnabled;
+  final bool hasInitValue;
+  final String? initValue;
   const InputField({
     super.key,
+    this.isEnabled,
+    required this.isAuthField,
+    required this.keyboardType,
     required this.labelText,
     required this.icondata,
     required this.controller,
+    this.validator,
+    required this.hasInitValue,
+    this.initValue,
   });
 
   @override
@@ -23,6 +35,10 @@ class _InputFieldState extends State<InputField> {
       width: 300,
       height: 50,
       child: TextFormField(
+        initialValue: widget.hasInitValue ? widget.initValue : null,
+        enabled: widget.isEnabled,
+        keyboardType: widget.keyboardType,
+        validator: widget.isAuthField ? widget.validator : null,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400, width: 1.0),

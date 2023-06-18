@@ -3,6 +3,9 @@ import 'package:e_lugstore/screens/landing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/staff/home.dart';
+import '../screens/user/home.dart';
+
 class NavDrawer extends StatefulWidget {
   final bool? isStaff;
   const NavDrawer({
@@ -35,7 +38,15 @@ class _NavDrawerState extends State<NavDrawer> {
           ListTile(
             title: Text(widget.isStaff! ? 'Booking List' : 'Booking History'),
             onTap: () {
-              Navigator.pop(context);
+              widget.isStaff!
+                  ? Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const StaffHome()))
+                  : Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserHome()));
             },
           ),
           ListTile(
@@ -47,7 +58,10 @@ class _NavDrawerState extends State<NavDrawer> {
           ListTile(
             title: const Text('Logout'),
             onTap: () {
-              FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.signOut().whenComplete(() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LandingPage())));
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_lugstore/constants/bg.dart';
 import 'package:e_lugstore/screens/login/inputfield.dart';
+import 'package:e_lugstore/screens/user/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -76,38 +77,51 @@ class _SignUpPageState extends State<SignUpPage> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              hasInitValue: false,
                               labelText: "Name",
                               icondata: Icons.person,
                               controller: nameController,
+                              isAuthField: false,
+                              keyboardType: TextInputType.name,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              hasInitValue: false,
                               labelText: "Matric No",
                               icondata: Icons.credit_card,
                               controller: matricController,
+                              isAuthField: false,
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              hasInitValue: false,
                               labelText: "Email",
                               icondata: Icons.email,
                               controller: emailController,
+                              isAuthField: false,
+                              keyboardType: TextInputType.emailAddress,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              hasInitValue: false,
                               labelText: "Password",
                               icondata: Icons.lock,
                               controller: passwordController,
+                              isAuthField: false,
+                              keyboardType: TextInputType.visiblePassword,
                             ),
                           ),
                           Padding(
                               padding: const EdgeInsets.all(20),
                               child: MyButton(
+                                  isRed: false,
                                   text: "Sign Up",
                                   onPressed: () {
                                     setState(() {
@@ -122,10 +136,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                       setState(() {
                                         FirebaseAuth.instance.currentUser!
                                             .updateDisplayName(
-                                                nameController.text.trim());
-                                        isLoading = false;
+                                                nameController.text.trim())
+                                            .whenComplete(() {
+                                          isLoading = false;
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const UserHome()));
+                                        });
                                       });
-                                      Navigator.pop(context);
                                     });
                                   }))
                         ],
@@ -140,10 +159,18 @@ class _SignUpPageState extends State<SignUpPage> {
     required String matricNo,
     required String name,
   }) async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
     await FirebaseFirestore.instance.collection("users").doc(matricNo).set({
       "name": name,
       "matric no": matricNo,

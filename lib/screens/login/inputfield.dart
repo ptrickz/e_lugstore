@@ -10,6 +10,7 @@ class InputField extends StatefulWidget {
   final bool? isEnabled;
   final bool hasInitValue;
   final String? initValue;
+  final bool? isPassword;
   const InputField({
     super.key,
     this.isEnabled,
@@ -20,6 +21,7 @@ class InputField extends StatefulWidget {
     required this.controller,
     this.validator,
     required this.hasInitValue,
+    required this.isPassword,
     this.initValue,
   });
 
@@ -35,6 +37,7 @@ class _InputFieldState extends State<InputField> {
       width: 300,
       height: 50,
       child: TextFormField(
+        obscureText: widget.isPassword!,
         initialValue: widget.hasInitValue ? widget.initValue : null,
         enabled: widget.isEnabled,
         keyboardType: widget.keyboardType,

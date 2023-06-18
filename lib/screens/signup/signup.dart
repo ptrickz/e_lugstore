@@ -77,6 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
                               labelText: "Name",
                               icondata: Icons.person,
@@ -88,8 +89,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
-                              labelText: "Matric No",
+                              labelText: "Matric No/Staff No",
                               icondata: Icons.credit_card,
                               controller: matricController,
                               isAuthField: false,
@@ -99,6 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
                               labelText: "Email",
                               icondata: Icons.email,
@@ -110,6 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: InputField(
+                              isPassword: true,
                               hasInitValue: false,
                               labelText: "Password",
                               icondata: Icons.lock,

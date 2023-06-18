@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_lugstore/constants/bg.dart';
+import 'package:e_lugstore/screens/staff/qrscanner.dart';
 import 'package:flutter/material.dart';
 import '../user/bookingdetails.dart';
 
@@ -21,7 +22,10 @@ class _StaffHomeState extends State<StaffHome> {
         pageTitle: "Booking Lists",
         assetImage: "assets/images/homeStaff.png",
         fabIcon: Icons.qr_code_scanner,
-        fabFunc: () {},
+        fabFunc: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const QRScanner()));
+        },
         child: StreamBuilder(
             stream: readBookings,
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -69,7 +73,7 @@ class _StaffHomeState extends State<StaffHome> {
                                 data['id'],
                               ),
                               subtitle: Text(
-                                  "booked on ${DateTime.parse(data['date'].toDate().toString()).toString().substring(0, 10)}"),
+                                  "booked on ${DateTime.parse(data['date'].toDate().toString()).toString().substring(0, 10)} \n${data['status']}"),
                               trailing: Text(
                                 data['quantity'].toString(),
                                 style: const TextStyle(

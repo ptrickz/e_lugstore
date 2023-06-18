@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_lugstore/constants/bg.dart';
 import 'package:e_lugstore/screens/login/inputfield.dart';
+import 'package:e_lugstore/screens/user/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,24 @@ class _BookingFormState extends State<BookingForm> {
   final TextEditingController quantityController = TextEditingController();
   final TextEditingController dateController =
       TextEditingController(text: DateTime.now().toString().substring(0, 16));
+
+  alertBox(String title, String message, VoidCallback onPressed) async {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(title),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(message),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: onPressed, child: const Text("OK"))
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -36,13 +55,20 @@ class _BookingFormState extends State<BookingForm> {
                 hasAction: true,
                 actionIcon: Icons.check,
                 actionButtonFunc: () {
-                  createBooking(
-                    user: nameController.text.trim(),
-                    matricNo: snapshot.data![0]['matric no'],
-                    quantity: quantityController.text.trim(),
-                    date: DateTime.parse(dateController.text.trim()),
-                    status: "Pending",
-                  ).then((value) => Navigator.pop(context));
+                  alertBox("Confirm Booking?",
+                      "Confirm to book: \n${quantityController.text.trim()} item of luggage. \nUnder the name: ${nameController.text.trim()}",
+                      () {
+                    createBooking(
+                      user: nameController.text.trim(),
+                      matricNo: snapshot.data![0]['matric no'],
+                      quantity: quantityController.text.trim(),
+                      date: DateTime.parse(dateController.text.trim()),
+                      status: "Pending",
+                    ).then((value) => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserHome())));
+                  });
                 },
                 appBarLeading: () {
                   Navigator.pop(context);
@@ -68,6 +94,7 @@ class _BookingFormState extends State<BookingForm> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
                               labelText: "Name",
                               icondata: Icons.person,
@@ -79,6 +106,7 @@ class _BookingFormState extends State<BookingForm> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
                               labelText: "Matric No.",
                               icondata: Icons.credit_card,
@@ -91,6 +119,7 @@ class _BookingFormState extends State<BookingForm> {
                           Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: InputField(
+                                isPassword: false,
                                 hasInitValue: false,
                                 labelText: "Quantity",
                                 icondata: Icons.numbers,
@@ -101,6 +130,7 @@ class _BookingFormState extends State<BookingForm> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: InputField(
+                              isPassword: false,
                               hasInitValue: false,
                               isEnabled: false,
                               labelText: "Date",
@@ -159,14 +189,14 @@ class _BookingFormState extends State<BookingForm> {
         .collection('bookings')
         .doc("L$matricNo-$dateId-$time");
     final booking = Bookings(
-      email: FirebaseAuth.instance.currentUser!.email!,
-      user: user,
-      matricNo: matricNo,
-      quantity: quantity,
-      date: date,
-      id: ("L$matricNo-$dateId-$time"),
-      status: status,
-    );
+        email: FirebaseAuth.instance.currentUser!.email!,
+        user: user,
+        matricNo: matricNo,
+        quantity: quantity,
+        date: date,
+        id: ("L$matricNo-$dateId-$time"),
+        status: status,
+        checkoutConfirmation: "Pending Scan");
     final json = booking.toJson();
     try {
       await docBooking.set(json);
@@ -186,6 +216,7 @@ class Bookings {
   final String email;
   final String id;
   final String status;
+  final String checkoutConfirmation;
 
   Bookings({
     required this.email,
@@ -195,6 +226,7 @@ class Bookings {
     required this.date,
     required this.id,
     required this.status,
+    required this.checkoutConfirmation,
   });
 
   factory Bookings.fromJson(Map<String, dynamic> json) {
@@ -205,7 +237,8 @@ class Bookings {
         email: json['email'],
         date: json['date'],
         status: json['status'],
-        id: json['id']);
+        id: json['id'],
+        checkoutConfirmation: json['checkoutConfirmation']);
   }
   Map<String, dynamic> toJson() {
     return {
@@ -216,6 +249,7 @@ class Bookings {
       'email': email,
       'id': id,
       'status': status,
+      'checkoutConfirmation': checkoutConfirmation,
     };
   }
 }

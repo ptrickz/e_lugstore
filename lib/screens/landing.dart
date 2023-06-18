@@ -1,6 +1,5 @@
 import 'package:e_lugstore/screens/login/auth.dart';
 import 'package:e_lugstore/screens/signup/signup.dart';
-import 'package:e_lugstore/screens/user/home.dart';
 import 'package:e_lugstore/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

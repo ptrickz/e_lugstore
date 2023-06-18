@@ -1,5 +1,6 @@
 import 'package:e_lugstore/constants/constants.dart';
 import 'package:e_lugstore/screens/landing.dart';
+import 'package:e_lugstore/screens/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,9 @@ class _NavDrawerState extends State<NavDrawer> {
           ListTile(
             title: const Text('Profile'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                      email: FirebaseAuth.instance.currentUser!.email!)));
             },
           ),
           ListTile(

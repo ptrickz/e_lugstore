@@ -99,8 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: InputField(
+                            isPassword: false,
                             hasInitValue: false,
-                            labelText: "Matric No",
+                            labelText: "Matric No/Staff No",
                             icondata: Icons.credit_card,
                             controller: matricController,
                             isAuthField: false,
@@ -110,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: InputField(
+                            isPassword: true,
                             hasInitValue: false,
                             labelText: "Password",
                             icondata: Icons.lock,

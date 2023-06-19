@@ -48,7 +48,7 @@ class _BookingDetailsState extends State<BookingDetails> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Background(
                 pageTitle: "Booking Details",
-                assetImage: "assets/images/login.png",
+                assetImage: "assets/images/bookingDetails.png",
                 hasDrawer: false,
                 isHomePage: false,
                 hasAction: false,
@@ -58,7 +58,7 @@ class _BookingDetailsState extends State<BookingDetails> {
           if (snapshot.hasError) {
             return const Background(
                 pageTitle: "Booking Details",
-                assetImage: "assets/images/login.png",
+                assetImage: "assets/images/bookingDetails.png",
                 hasDrawer: false,
                 isHomePage: false,
                 hasAction: false,
@@ -67,7 +67,7 @@ class _BookingDetailsState extends State<BookingDetails> {
           if (!snapshot.hasData) {
             return const Background(
                 pageTitle: "Booking Details",
-                assetImage: "assets/images/login.png",
+                assetImage: "assets/images/bookingDetails.png",
                 hasDrawer: false,
                 isHomePage: false,
                 hasAction: false,
@@ -100,7 +100,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                       : Navigator.pop(context);
                 },
                 pageTitle: isEditing ? "Edit Details" : "Booking Details",
-                assetImage: "assets/images/login.png",
+                assetImage: "assets/images/bookingDetails.png",
                 hasDrawer: false,
                 isHomePage: false,
                 hasAction: true,

@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Background(
               pageTitle: "Profile",
-              assetImage: "assets/images/login.png",
+              assetImage: "assets/images/profile.png",
               hasDrawer: false,
               isHomePage: false,
               hasAction: false,
@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (snapshot.hasError) {
           return const Background(
               pageTitle: "Profile",
-              assetImage: "assets/images/login.png",
+              assetImage: "assets/images/profile.png",
               hasDrawer: false,
               isHomePage: false,
               hasAction: false,
@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         return Background(
             pageTitle: "Profile",
-            assetImage: "assets/images/login.png",
+            assetImage: "assets/images/profile.png",
             isStaff: snapshot.data!.docs[0]['staff'],
             hasDrawer: !isEditing,
             icon: isEditing ? Icons.close : Icons.menu,

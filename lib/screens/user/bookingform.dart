@@ -45,7 +45,7 @@ class _BookingFormState extends State<BookingForm> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Background(
                 pageTitle: "Booking Form",
-                assetImage: "assets/images/login.png",
+                assetImage: "assets/images/booking.png",
                 hasDrawer: false,
                 isHomePage: false,
                 hasAction: false,

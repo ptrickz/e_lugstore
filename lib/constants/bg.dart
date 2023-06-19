@@ -95,26 +95,29 @@ class _BackgroundState extends State<Background> {
           foregroundColor: Colors.black,
           surfaceTintColor: Colors.transparent,
         ),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 0,
-              left: MediaQuery.of(context).size.width / 2 - 125,
-              width: 250,
-              height: 250,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(widget.assetImage),
-                    fit: BoxFit.fitWidth,
+        body: Container(
+          color: Colors.white,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                bottom: 0,
+                left: MediaQuery.of(context).size.width / 2 - 125,
+                width: 250,
+                height: 250,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(widget.assetImage),
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Center(
-              child: widget.child,
-            )
-          ],
+              Center(
+                child: widget.child,
+              )
+            ],
+          ),
         ));
   }
 }
